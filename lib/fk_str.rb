@@ -76,6 +76,26 @@ module FkStr
 		
 	end
 
+	def self.downcase w
+
+		return w if w.to_s == ''
+
+		# Cria uma Array apenas com os caracteres necessários por questões de performance.
+		letters = []
+		clean_word = self.remove_accents(w).downcase.gsub(/[^a-z]/, '')
+		clean_word.split('').uniq.each { |lt| @@letters_by_letter[lt].each { |l| letters << l } }
+		
+		letters.each do |l|
+				
+			# Transforma tudo em minúsculo.
+			w = w.gsub l[1], l[0]
+
+		end
+
+		return w
+
+	end
+	
 	# 35 seconds
 	# 18 seconds
 	# 16 seconds
