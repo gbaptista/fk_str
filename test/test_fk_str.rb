@@ -134,6 +134,15 @@ class FkStrTest < Test::Unit::TestCase
 
 	end
 
+	def test_upcase
+		
+		assert_equal(
+			'AÇÚCAR',
+			FkStr.upcase('açúcar')
+		)
+
+	end
+
 	def test_upcasewords
 
 		assert_equal(
