@@ -1,10 +1,5 @@
 # encoding: utf-8
-
-require 'date'
-require 'fk_str/dictionary'
-
 module FkStr
-
 	def self.treat_encoding str, debug=false
 		str_r = ''
 		str.lines.each_with_index { |l, i| str_r += ' ' + self.treat_encoding_s(l, debug) if !debug or (i > -1 and i < 1) }
@@ -12,7 +7,6 @@ module FkStr
 	end
 
 	def self.is_eq str, str_b, pct=1
-		
 		str = self.to_term str, true
 		str_b = self.to_term str_b, true
 
@@ -21,23 +15,20 @@ module FkStr
 		return true if (100-(100*str_c.uniq.size/str_c.size)) >= pct
 
 		return false
-
 	end
 
 	def self.to_slug str
-		
 		return str if str.to_s == ''
 
 		return self.remove_accents(str).gsub(/\s{1,}| {1,}/, ' ').gsub(/[\+\/_\-|:@#\\,]/, ' ').gsub('&', 'e').gsub(/[^a-zA-Z0-9 ]/, '').downcase.gsub(/\s{1,}| {1,}/, ' ').strip.gsub(' ', '-')
-
 	end
 
 	def self.to_term str, ar=false
-		
+
 		return str if str.to_s == ''
-		
+
 		str_ar = []
-		
+
 		self.to_slug(str).split('-').each do |s|
 			s.split('').uniq.each { |r| s = s.gsub /#{r}{2,}/, r }
 			@@simple_downcase_consonants.each { |c| s = s.gsub /#{c}(h|r|l|u)/, c }
@@ -54,11 +45,11 @@ module FkStr
 				str_ar << s if !s.empty?
 			end
 		end
-		
+
 		return str_ar.uniq if ar
-		
+
 		return str_ar.uniq.join
-		
+
 	end
 
 	def self.remove_accents str
@@ -73,7 +64,7 @@ module FkStr
 		str = str.gsub(/[ȲŸÝỲ]/, 'Y').gsub(/[ȳÿýỳ]/, 'y').gsub(/Ž/, 'Z').gsub(/ž/, 'z')
 
 		return str
-		
+
 	end
 
 	def self.upcase w
@@ -84,9 +75,9 @@ module FkStr
 		letters = []
 		clean_word = self.remove_accents(w).downcase.gsub(/[^a-z]/, '')
 		clean_word.split('').uniq.each { |lt| @@letters_by_letter[lt].each { |l| letters << l } }
-		
+
 		letters.each do |l|
-				
+
 			# Transforma tudo em maiúsculo.
 			w = w.gsub l[0], l[1]
 
@@ -104,9 +95,9 @@ module FkStr
 		letters = []
 		clean_word = self.remove_accents(w).downcase.gsub(/[^a-z]/, '')
 		clean_word.split('').uniq.each { |lt| @@letters_by_letter[lt].each { |l| letters << l } }
-		
+
 		letters.each do |l|
-				
+
 			# Transforma tudo em minúsculo.
 			w = w.gsub l[1], l[0]
 
@@ -115,7 +106,7 @@ module FkStr
 		return w
 
 	end
-	
+
 	# 35 seconds
 	# 18 seconds
 	# 16 seconds
@@ -174,9 +165,9 @@ module FkStr
 
 						# Se o primeiro char do termo não for uma letra ou se o char anterior ao termo não for uma letra...
 						if (!@@simple_downcase_letters.include? t[0] or !@@simple_downcase_letters.include? str_t[str_t.size-t.size-1]) and str_t.size > 1
-							
+
 							str_l = str
-							
+
 							str = str[0..str.size-t.size-1].strip
 							str_t = self.remove_accents(str).downcase
 
@@ -211,18 +202,18 @@ module FkStr
 	end
 
 	def self.extract_dates str, reference_date=Time.now, reverse_month_day=false
-		
+
 		return [] if str.nil?
-		
+
 		return [Time.new(str.year, str.month, str.day)] if str.kind_of?(Time) or str.kind_of?(Date) or str.kind_of?(DateTime)
-		
+
 		o_str = str
-		
+
 		years = []
 		(-30..20).each { |y| years << reference_date.year+y }
 
 		begin
-			
+
 			str = str.gsub /[0-9]{1,}(º|ª)/, ' '
 
 			str = self.remove_accents str
@@ -238,17 +229,17 @@ module FkStr
 			str = str.gsub(/[0-9]{1,}:[0-9]{1,}|:[0-9]{1,}|[0-9]{1,}h[0-9]{1,}|[0-9]{1,}%|[0-9]{1,}h |[0-9]{1,}h$|palco [0-9]{1,}/i, '')
 
 			str.scan(/[0-9]{1,}+.+[0-9]{1,}/).each { |d| str = str.gsub(d, d.gsub('.', '/')) }
-			
+
 			if reverse_month_day
 				str.scan(/[0-9]{1,}\/[0-9]{1,}/).each do |d|
 					str = str.gsub(d, d.split('/')[1] + '/' + d.split('/')[0])
 				end
 			end
-			
+
 			@@months_strs.each do |mc|
 				str.scan(/#{mc.first}.*[0-9]{1,2}+[1-9]{2,4}/).each do |md|
 					if md.scan(/[0-9]{1,2}/).size < 4 and md.scan(/[0-9]{4,}/).size < (md.scan(/[0-9]{2,2}/).size-1)
-						
+
 						continue = true
 
 						@@months_strs.each do |smc|
@@ -349,17 +340,14 @@ module FkStr
 					end
 				end
 			end
-					
-			return dates.uniq.sort
 
+			return dates.uniq.sort
 		rescue => exc
 			return []
 		end
-		
 	end
 
 	def self.extract_time str, date=nil, reference_time=Time.now
-
 		return nil if date.nil?
 
 		return Time.new(date.year, date.month, date.day, reference_time.hour, reference_time.min) if str.nil? or !str.match /[0-9]{1,2}:[0-9]{1,2}/
@@ -368,11 +356,10 @@ module FkStr
 			time = str.scan(/[0-9]{1,2}:[0-9]{1,2}/).first.split(':')
 			return Time.new(date.year, date.month, date.day, time[0], time[1])
 		rescue => exp
-			return Time.new(date.year, date.month, date.day, reference_time.hour, reference_time.min) 
+			return Time.new(date.year, date.month, date.day, reference_time.hour, reference_time.min)
 		end
-
 	end
-	
+
 	private
 
 	def self.treat_encoding_s str, debug=false
@@ -390,9 +377,7 @@ module FkStr
 			str_r = ''
 			str.chars.each_slice(200).each { |w| str_r += self.treat_encoding_i w.join, 0, debug }
 		end
-
 		return str_r
-
 	end
 
 	def self.valid_encoding str, tolerance=0, debug=false
@@ -413,9 +398,8 @@ module FkStr
 	end
 
 	def self.treat_encoding_i str, tolerance=0, debug=false
-		
 		str_t = str
-		
+
 		str_v = self.valid_encoding str_t, tolerance, debug
 		if !str_v
 			puts '[try force_encoding UTF-8]' if debug
@@ -426,7 +410,7 @@ module FkStr
 		else
 			return str_v
 		end
-		
+
 		str_v = self.valid_encoding str_t, tolerance, debug
 		if !str_v
 			puts '[try WINDOWS-1252]' if debug
@@ -437,7 +421,7 @@ module FkStr
 		else
 			return str_v
 		end
-		
+
 		str_v = self.valid_encoding str_t, tolerance, debug
 		if !str_v
 			puts '[try UTF-8]' if debug
@@ -459,7 +443,7 @@ module FkStr
 		else
 			return str_v
 		end
-		
+
 		str_v = self.valid_encoding str_t, tolerance, debug
 		if !str_v
 			puts '[try ISO-8859-3]' if debug
@@ -470,18 +454,16 @@ module FkStr
 		else
 			return str_v
 		end
-		
+
 		str_v = self.valid_encoding str_t, tolerance, debug
 		if tolerance == 0 and !str_v
 			str_t = self.treat_encoding_i str, 1, debug
 		end
-		
+
 		return str_t
-		
 	end
 
 	def self.upcaseword w
-
 		return w if w.to_s == ''
 
 		if w.scan(/#{@@separators_regex.join('|')}/).size == 0
@@ -494,9 +476,8 @@ module FkStr
 			trf = 'tm'
 			trf = 'tfu'	if w.size > 5 or !@@articles_and_others.include? clean_word
 			trf = 'tau'	if !w.match(/^mr$|^jr$|^mr.$|^jr.$|^sr$|^sr.$/i) and ((w.size < 6 and clean_word.match(/[^aeiouwy]{4,}|[aeiouwy]{4,}|^[^aeiouwy]{2,3}$/)) or w.scan('.').size > 2)
-			
+
 			letters.each do |l|
-				
 				# Transforma tudo em minúsculo.
 				w = w.gsub l[1], l[0] if trf == 'tm' || trf == 'tfu'
 
@@ -509,7 +490,6 @@ module FkStr
 				# * Sequência exata de 2 ou 3 vogais.
 
 				w = w.gsub l[0], l[1] if trf == 'tau'
-
 			end
 
 		else
@@ -527,11 +507,8 @@ module FkStr
 					end
 				end
 			end
-
 		end
 
 		return w
-
 	end
-	
 end

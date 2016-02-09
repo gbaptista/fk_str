@@ -1,6 +1,8 @@
 # encoding: utf-8
 
 require 'test/unit'
+require 'date'
+require 'fk_str/dictionary'
 require 'fk_str'
 
 class FkStrTest < Test::Unit::TestCase
@@ -126,7 +128,7 @@ class FkStrTest < Test::Unit::TestCase
 	end
 
 	def test_downcase
-		
+
 		assert_equal(
 			'açúcar',
 			FkStr.downcase('AÇÚCAR')
@@ -135,7 +137,7 @@ class FkStrTest < Test::Unit::TestCase
 	end
 
 	def test_upcase
-		
+
 		assert_equal(
 			'AÇÚCAR',
 			FkStr.upcase('açúcar')

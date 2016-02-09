@@ -1,7 +1,5 @@
 # encoding: utf-8
-
 module FkStr
-
 	@@months_strs = {
 		'jan' => 1, 'fev' => 2, 'mar' => 3, 'abr' => 4, 'mai' => 5, 'jun' => 6,
 		'jul' => 7, 'ago' => 8, 'set' => 9, 'out' => 10, 'nov' => 11, 'dez' => 12,
@@ -82,7 +80,7 @@ module FkStr
 		'u', 'v', 'w', 'x', 'y',
 		'z'
 	]
-	
+
 	@@simple_downcase_consonants = [
 		'b', 'c', 'd',
 		'f', 'g', 'h', 'j',
@@ -96,11 +94,10 @@ module FkStr
 	def FkStr.separators
 		return @@separators
 	end
-	
+
 	@@separators_regex = ['\/', '\-', "\'", '\"', '\(', '\)', '\[', '\]', '\{', '\}']
-	
+
 	@@legal_chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz _-!@#$%&*+=?^~´`,.:;\'"()[]{}|/\\<>ÁÃÂÀÄĂĀÅÆáãâàäăāåæÉẼÊÈËĔĒéẽêèëĕēÍĨÎÌÏĬĪíĩîìïĭīÓÕÔÒÖŎŌŐÐóõôòöŏōőðšŠÚŨÛÙÜŬŪǕúũûùüŭūǖÇçČčĞğÑñȲȳŸÿÝýỲỳŽž¹²³ºª	– ’©®℗¿¡±“”•«»‘°'.split('')
 
 	@@invalid_sequences = ['Ã©']
-	
 end
