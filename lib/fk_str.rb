@@ -20,7 +20,7 @@ module FkStr
 	def self.to_slug str
 		return str if str.to_s == ''
 
-		return self.remove_accents(str).gsub(/\s{1,}| {1,}/, ' ').gsub(/[\+\/_\-|:@#\\,]/, ' ').gsub('&', 'e').gsub(/[^a-zA-Z0-9 ]/, '').downcase.gsub(/\s{1,}| {1,}/, ' ').strip.gsub(' ', '-')
+		return self.remove_accents(str).gsub(/\s{1,}| {1,}/, ' ').gsub(/[\+\/_\-|:@#\\,\(\)]/, ' ').gsub('&', 'e').gsub(/[^a-zA-Z0-9 ]/, '').downcase.gsub(/\s{1,}| {1,}/, ' ').strip.gsub(' ', '-')
 	end
 
 	def self.to_term str, ar=false

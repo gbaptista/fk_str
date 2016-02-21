@@ -229,7 +229,6 @@ class FkStrTest < Test::Unit::TestCase
 			[Time.new(2012, 1, 2)].uniq.sort,
 			FkStr.extract_dates('2 de janeiro', Time.new(2011, 10, 8))
 		)
-
 	end
 
 	def test_extract_time
