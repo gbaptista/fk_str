@@ -1,3 +1,5 @@
+require 'pry'
+
 # encoding: utf-8
 module FkStr
 	def self.treat_encoding str, debug=false
@@ -9,6 +11,8 @@ module FkStr
 	def self.is_eq str, str_b, pct=1
 		str = self.to_term str, true
 		str_b = self.to_term str_b, true
+
+		return true if str == str_b
 
 		str_c = str.concat str_b
 
@@ -163,7 +167,8 @@ module FkStr
 					# Se antes do termo final na string não for igual à ' de ' ou ' da '...
 					if ![' de ', ' da '].include? str_t[str_t.size-t.size-4].to_s + str_t[str_t.size-t.size-3..str_t.size-t.size-2].to_s + str_t[str_t.size-t.size-1].to_s
 
-						# Se o primeiro char do termo não for uma letra ou se o char anterior ao termo não for uma letra...
+						# Se o primeiro char do termo não for uma letra ou se o
+						# char anterior ao termo não for uma letra...
 						if (!@@simple_downcase_letters.include? t[0] or !@@simple_downcase_letters.include? str_t[str_t.size-t.size-1]) and str_t.size > 1
 
 							str_l = str
@@ -171,9 +176,17 @@ module FkStr
 							str = str[0..str.size-t.size-1].strip
 							str_t = self.remove_accents(str).downcase
 
-							removed << str_l[str.size..str_l.size]
+							if str_l[str.size..str_l.size] != ''
 
-							continue = true
+								removed << str_l[str.size..str_l.size]
+
+								continue = true
+
+							else
+
+								str = ''
+
+							end
 
 						end
 
@@ -197,7 +210,11 @@ module FkStr
 			end
 		end
 
-		return str
+		if str == ''
+			return str_o
+		else
+			return str
+		end
 
 	end
 

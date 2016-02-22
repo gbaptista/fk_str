@@ -32,6 +32,10 @@ class FkStrTest < Test::Unit::TestCase
 	end
 
 	def test_is_eq
+		assert_equal(
+			true,
+			FkStr.is_eq('Sr.', 'Sr.', 1)
+		)
 
 		assert_equal(
 			true,
@@ -170,6 +174,13 @@ class FkStrTest < Test::Unit::TestCase
 	end
 
 	def test_remove_if_ends_with
+		assert_equal(
+			'Sr. Brasil',
+			FkStr.remove_if_ends_with(
+				'Sr. Brasil',
+				['Brasil', 'Sr.']
+			)
+		)
 
 		assert_equal(
 			'Natal La Barra',
