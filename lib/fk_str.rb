@@ -237,6 +237,8 @@ module FkStr
 
 			str = str.downcase
 
+			str = str.gsub /[a-z]{1,}+[0-9]{1,}/, ' '
+
 			str = str.gsub /[0-9]{1,}+[a-z]{1,}+[0-9]{1,}/, ''
 			str = str.gsub /[0-9]{1,}+[a-z]{1,}/, ' '
 			str = str.gsub /[a-z]{1,}+[0-9]{1,}/, ' '
@@ -368,6 +370,8 @@ module FkStr
 		return nil if date.nil?
 
 		return Time.new(date.year, date.month, date.day, reference_time.hour, reference_time.min) if str.nil? or !str.match /[0-9]{1,2}:[0-9]{1,2}/
+
+		str = str.gsub /[a-z]{1,}+[0-9]{1,}:/i, ' '
 
 		begin
 			time = str.scan(/[0-9]{1,2}:[0-9]{1,2}/).first.split(':')

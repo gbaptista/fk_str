@@ -222,6 +222,11 @@ class FkStrTest < Test::Unit::TestCase
 	def test_extract_dates
 
 		assert_equal(
+			[Time.new(2016, 2, 23)].uniq.sort,
+			FkStr.extract_dates('2016-02-23T00:22:31-03:00', Time.new(2016, 2, 23))
+		)
+
+		assert_equal(
 			[Time.new(2012, 12, 6)].uniq.sort,
 			FkStr.extract_dates('December 06, 2012', Time.new(2012, 9, 12))
 		)
@@ -243,6 +248,15 @@ class FkStrTest < Test::Unit::TestCase
 	end
 
 	def test_extract_time
+
+		assert_equal(
+			Time.new(2016, 02, 23, 22, 31, 0),
+			FkStr.extract_time(
+				'2016-02-23T00:22:31-03:00',
+				FkStr.extract_dates('2016-02-23T00:22:31-03:00', Time.new(2016, 2, 23)).first,
+				Time.new(2016, 2, 23)
+			)
+		)
 
 		assert_equal(
 			Time.new(2011, 07, 14, 22, 18, 0),
