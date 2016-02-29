@@ -1,5 +1,4 @@
 Gem::Specification.new do |s|
-
     s.name        = 'fk_str'
     s.version     = '0.0.3'
     s.date        = '2013-01-19'
@@ -22,5 +21,5 @@ Gem::Specification.new do |s|
         'lib/fk_str/*'
     ]
     s.homepage    = 'https://github.com/gbaptista/fk_str'
-    
+
 end

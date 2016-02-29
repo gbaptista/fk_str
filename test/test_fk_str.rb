@@ -1,9 +1,8 @@
 # encoding: utf-8
-
 require 'test/unit'
 require 'date'
-require 'fk_str/dictionary'
-require 'fk_str'
+require './lib/fk_str/dictionary'
+require './lib/fk_str'
 
 class FkStrTest < Test::Unit::TestCase
 
@@ -57,6 +56,15 @@ class FkStrTest < Test::Unit::TestCase
 			FkStr.is_eq('Creedence Clearwater Revisited', 'Creedence Clearwater')
 		)
 
+		assert_equal(
+			true,
+			FkStr.is_eq('Estádio Morumbi', 'Morumbi', 50)
+		)
+
+		assert_equal(
+			false,
+			FkStr.is_eq('Estádio Morumbi', 'Morumbi', 51)
+		)
 	end
 
 	def test_to_slug

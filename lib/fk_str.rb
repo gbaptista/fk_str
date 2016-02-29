@@ -8,15 +8,31 @@ module FkStr
 		return str_r.strip
 	end
 
-	def self.is_eq str, str_b, pct=1
-		str = self.to_term str, true
-		str_b = self.to_term str_b, true
+	def self.is_eq str_a, str_b, pct=1, already_term=false
+		unless already_term
+			str_a = self.to_term str_a, true
+			str_b = self.to_term str_b, true
+		end
 
-		return true if str == str_b
+		return true if str_a == str_b
 
-		str_c = str.concat str_b
+		if str_a.size > str_b.size
+			larger_string  = str_a
+			smaller_string = str_b
+		else
+			larger_string  = str_b
+			smaller_string = str_a
+		end
 
-		return true if (100-(100*str_c.uniq.size/str_c.size)) >= pct
+		equal_words = 0
+
+		smaller_string.each do |word|
+			equal_words += 1 if larger_string.include? word
+		end
+
+		equal_pct = (100 * equal_words) / larger_string.size
+
+		return true if (equal_pct >= pct)
 
 		return false
 	end
