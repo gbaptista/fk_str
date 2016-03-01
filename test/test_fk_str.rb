@@ -183,6 +183,19 @@ class FkStrTest < Test::Unit::TestCase
 
 	def test_remove_if_ends_with
 		assert_equal(
+			'THE ROLLING STONES',
+			FkStr.remove_if_ends_with(
+				'THE ROLLING STONES SÃO PAULO 2016',
+				[
+					'2016', 'São Paulo', 'SP', 'br', 'Estádio do Morumbi',
+					'EstAdio CIcero POMPEU de Toledo', '-', '/', 'no', 'na', 'em',
+					'Brasil'
+				],
+				['Sr.']
+			)
+		)
+
+		assert_equal(
 			'Sr. Brasil',
 			FkStr.remove_if_ends_with(
 				'Sr. Brasil',

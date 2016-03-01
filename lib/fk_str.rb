@@ -8,7 +8,7 @@ module FkStr
 		return str_r.strip
 	end
 
-	def self.is_eq str_a, str_b, pct=1, already_term=false
+	def self.is_eq str_a, str_b, pct=1, already_term=false, return_pct=false
 		unless already_term
 			str_a = self.to_term str_a, true
 			str_b = self.to_term str_b, true
@@ -32,9 +32,15 @@ module FkStr
 
 		equal_pct = (100 * equal_words) / larger_string.size
 
-		return true if (equal_pct >= pct)
+		if return_pct
+			return [true, equal_pct] if (equal_pct >= pct)
 
-		return false
+			return [false, equal_pct]
+		else
+			return true if (equal_pct >= pct)
+
+			return false
+		end
 	end
 
 	def self.to_slug str
