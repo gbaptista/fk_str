@@ -14,7 +14,13 @@ module FkStr
 			str_b = self.to_term str_b, true
 		end
 
-		return true if str_a == str_b
+		if str_a == str_b
+			if return_pct
+				return [true, 100]
+			else
+				return true
+			end
+		end
 
 		if str_a.size > str_b.size
 			larger_string  = str_a
@@ -43,10 +49,14 @@ module FkStr
 		end
 	end
 
-	def self.to_slug str
+	def self.to_slug str, keep_dot=false
 		return str if str.to_s == ''
 
-		return self.remove_accents(str).gsub(/\s{1,}| {1,}/, ' ').gsub(/[\+\/_\-|:@#\\,\(\)]/, ' ').gsub('&', 'e').gsub(/[^a-zA-Z0-9 ]/, '').downcase.gsub(/\s{1,}| {1,}/, ' ').strip.gsub(' ', '-')
+		if keep_dot
+			return self.remove_accents(str).gsub(/\s{1,}| {1,}/, ' ').gsub(/[\+\/_\-|:@#\\,\(\)\.]/, ' ').gsub('&', 'e').gsub(/[^a-zA-Z0-9 ]/, '').downcase.gsub(/\s{1,}| {1,}/, ' ').strip.gsub(' ', '-')
+		else
+			return self.remove_accents(str).gsub(/\s{1,}| {1,}/, ' ').gsub(/[\+\/_\-|:@#\\,\(\)]/, ' ').gsub('&', 'e').gsub(/[^a-zA-Z0-9 ]/, '').downcase.gsub(/\s{1,}| {1,}/, ' ').strip.gsub(' ', '-')
+		end
 	end
 
 	def self.to_term str, ar=false

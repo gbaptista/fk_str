@@ -71,6 +71,16 @@ class FkStrTest < Test::Unit::TestCase
 
 		assert_equal(
 			'teste-dog',
+			FkStr.to_slug('teste.dog', true)
+		)
+
+		assert_equal(
+			'testedog',
+			FkStr.to_slug('teste.dog')
+		)
+
+		assert_equal(
+			'teste-dog',
 			FkStr.to_slug('teste:dog')
 		)
 
